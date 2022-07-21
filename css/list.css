@@ -10,8 +10,19 @@
     max-width: 600px;
 }
 
+.item-container > .list-container {
+    height: 400px;
+    overflow-y: auto;
+}
+
 .add-container {
     padding-left: 30px;
     padding-right: 30px;
     max-width: 350px;
+}
+
+.save-btn {
+    font-size: 1.5em;
+    display: inline-block;
+    width: 250px;
 }
