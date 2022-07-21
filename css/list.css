@@ -7,4 +7,11 @@
 .item-container {
     padding-left: 30px;
     padding-right: 30px;
+    max-width: 600px;
+}
+
+.add-container {
+    padding-left: 30px;
+    padding-right: 30px;
+    max-width: 350px;
 }

@@ -8,8 +8,10 @@ const GroceryList = function (container, initialList=[]) {
             <li class="list-li">
                 <div class="row">
                     <p>${product.description}</p>
-                    <img src="${product.thumbnail}"/>
-                    <button class="list-remove btn" data-index="${index}">&#10006;</button>
+                    <div class="ml-auto row align-center">
+                        <div class="thumbnail-container"><img class="thumbnail" src="${product.thumbnail}"/></div>
+                        <button class="list-remove btn btn-close" data-index="${index}">&#10006;</button>
+                    </div>
                 </div>
             </li>
         `)
@@ -59,7 +61,8 @@ const renderProducts = (product) => {
     <div class="search-dropdown-item" 
     data-product-description="${product.description}" 
     data-product-thumbnail="${thumbnailUrl}"
-    data-product-id="${product.productId}">
+    data-product-id="${product.productId}"
+    data-product-size="${product.items[0].size}">
         <div class="row align-center">
             <p>${product.description} - ${product.items[0].price.regular}</p>
             <img class="ml-auto" src=${thumbnailUrl}/>
