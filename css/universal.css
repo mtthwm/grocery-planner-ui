@@ -1,0 +1,159 @@
+/* Color Palette https://coolors.co/palette/f0ead2-dde5b6-adc178-a98467-6c584c */
+
+* {
+    box-sizing: border-box;
+}
+
+body, html {
+    padding: 0px;
+    margin: 0px;
+    background-color: #F0EAD2;
+    height: 100%;
+}
+
+.main-container {
+    width: 100%;
+    padding: 10px;
+}
+
+.full-height {
+    height: 100%;
+}  
+
+.full-width {
+    width: 100%;
+}
+
+.ml-auto {
+    margin-left: auto;
+}
+
+.mr-auto {
+    margin-right: auto;
+}
+
+.justify-center {
+    display: flex;
+    justify-content: center;
+}
+
+.align-center {
+    display: flex;
+    align-items: center; 
+}
+
+.btn {
+    background-color: #ADC178;
+    padding: 10px;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background-color: #DDE5B6;
+}
+
+h1, h2, h3 {
+    font-family: 'Merriweather', serif;
+    color: #6C584C;
+}
+
+html {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h1 {
+    font-size: 3rem;
+}
+
+h2 {
+    font-size: 2.5rem;
+}
+
+h3 {
+    font-size: 2rem;
+}
+
+.custom-input {
+    display: flex;
+    flex-direction: row;
+    font-size: 1.5rem;
+    background-color: white;
+}
+
+.custom-input-left {
+    width: 90%;
+    padding: 0.5rem;
+    border: none;
+    font-size: 1.5rem;
+}
+
+.custom-input-right {
+    width: 10%;
+    padding: 0.5rem;
+}
+
+.loader {
+    border: 0.25rem solid #ADC178;
+    border-top: 0.25rem solid #DDE5B6;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    animation: spin 0.5s linear infinite;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.chevron-right {
+    height: 1.25rem;
+    width: 1.25rem;
+    border-top: 0.25rem solid #ADC178;
+    border-right: 0.25rem solid #ADC178;
+    transform: rotate(45deg);
+}
+
+.search-dropdown-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.search-dropdown-item {
+    display: inline-block;
+    border-bottom: 0.25px solid #6C584C;
+}
+
+.search-dropdown-item:hover {
+    background-color: #DDE5B6;
+    cursor: pointer;
+}
+
+.search-dropdown-item > * {
+    pointer-events: none;
+}
+
+.search-dropdown-container {
+    height: 250px;
+    overflow-y: auto;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes spin {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
+}
+
+.no-pointer-events {
+    pointer-events: none;
+}

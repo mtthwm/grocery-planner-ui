@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Grocery List</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather&family=Open+Sans:wght@300&display=swap" rel="stylesheet"> 
+
+    <link href="../css/universal.css" rel="stylesheet">
+    <link href="../css/list.css" rel="stylesheet">
+    
+    <script src="../js/config.js"></script>
+    <script src="../js/list.js"></script>
+</head>
+    <body>
+        <div class="main-container full-height align-center justify-center">
+            <div class="row">
+                <div class="location-container col" id="location-container">
+                    <h2 class="location-title">Find your location</h2>
+                    <div class="custom-input">
+                        <input placeholder="Zip code" maxlength="5" class="custom-input-left search-dropdown-input"/>
+                        <div class="justify-center align-center custom-input-right"><div class="chevron-right"></div></div>
+                    </div>
+                    <div class="search-dropdown-container">
+                    </div>
+                </div>
+                
+                <div class="item-container col" id="item-container">
+                    <h2>Your grocery list</h2>
+                    <ul class="list-container">
+
+                    </ul>
+                </div>
+
+                <div class="add-container col" id="add-container">
+                    <h2>Add items</h2>
+                    <div class="custom-input">
+                        <input placeholder="Product name..." class="custom-input-left search-dropdown-input"/>
+                        <div class="justify-center align-center custom-input-right"><div class="chevron-right"></div></div>
+                    </div>
+                    <div class="search-dropdown-container">
+                    </div>
+                </div>
+            </div>
+        </div>   
+    </body>
+</html>
