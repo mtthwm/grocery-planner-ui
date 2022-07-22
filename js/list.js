@@ -28,6 +28,10 @@ const GroceryList = function (container, initialList=[]) {
         }));
     };
 
+    this.getList = () => {
+        return this._list;
+    };  
+
     this.add = (item) => {
         this._list.push(item);
         this.render();
@@ -71,6 +75,8 @@ const renderProducts = (product) => {
 }
 
 window.onload = () => {
+    const saveButton = document.getElementById('save-list-button');
+
     const groceryList = new GroceryList(document.querySelector('#item-container > .list-container'));
 
     const productClickHandler = (event) => {
@@ -79,6 +85,36 @@ window.onload = () => {
         const data = dataObject.product;
         groceryList.add(data);
     }
+
+    const saveList = async () => {
+        const items = groceryList.getList();
+        const location = window.localStorage.getItem('kroger_location_id');
+        const accessToken = window.localStorage.getItem('kroger_access_token');
+        console.log(accessToken);
+
+        const list = {location, items};
+        
+        const response = await fetch(config.SAVE_LIST_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+                accessToken,
+                list,
+            })
+        });
+
+        if (response && response.status == 200) {
+            const responseJson = await response.json();
+            
+            if (responseJson && responseJson.list)
+            {
+                alert('Your list was saved successfully!')
+            }
+        } else {
+            alert('There was an error with your list');
+        }
+    }
+    
+    saveButton.addEventListener('click', saveList);
 
     setUpSearchDropdown(document.getElementById('location-container'), lookupLocations, renderLocation, locationClickHandler);
     setUpSearchDropdown(document.getElementById('add-container'), lookupProducts, renderProducts, productClickHandler);
