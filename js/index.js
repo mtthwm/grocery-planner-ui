@@ -7,6 +7,7 @@ window.onload = async () => {
     if (code)
     {   
         const accessToken = await getKrogerAccess(code);
+        window.localStorage.setItem('kroger_authorization_code', code);
         window.localStorage.setItem('kroger_access_token', accessToken);
         window.location.href = '../html/list.html';
         krogerLoginButton.innerHTML = '<div class="loader"></div>';
