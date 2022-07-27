@@ -28,6 +28,15 @@ const GroceryList = function (container, initialList=[]) {
         }));
     };
 
+    this._totalPrice = () => {
+        let total = 0;
+        this._list.forEach(item => {
+            console.log(item);
+            return total += Number(item.price);
+        });
+        return total.toFixed(2);
+    };
+
     this.getList = () => {
         return this._list;
     };  
@@ -49,7 +58,31 @@ const GroceryList = function (container, initialList=[]) {
             return this._renderProduct(item, index)
         }).join('');
         this._container.innerHTML = content;  
+        const totalPrice = document.getElementById('total-price')
+        totalPrice.textContent = `$${this._totalPrice()}`;
         this._applyEventListeners();
+    };
+
+    this.initialize = async () => {
+        const accessToken = window.localStorage.getItem('kroger_access_token');
+        const response = await fetch(config.GET_LIST_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+                accessToken: accessToken,
+            })
+        });
+        if (response.status == 404)
+        {
+            this.render();
+            return;
+        }
+        const responseJson = await response.json();
+        const list = responseJson.list;
+
+        this._list = list.items;
+        window.localStorage.setItem('kroger_location_id', list.location);
+
+        this.render();
     };
 };
 
@@ -60,24 +93,30 @@ const renderLocation = (location) => {
 };
 
 const renderProducts = (product) => {
+    const item = product.items[0];
     const thumbnailUrl = product.images[0].sizes.find(image => image.size === 'thumbnail').url;
+    const onPromo = item.price.promo > 0;
+    const promoPrice = item.price.promo;
+    const price = onPromo ? promoPrice : item.price.regular; 
     return (`
     <div class="search-dropdown-item" 
     data-product-description="${product.description}" 
     data-product-thumbnail="${thumbnailUrl}"
     data-product-id="${product.productId}"
-    data-product-size="${product.items[0].size}">
+    data-product-size="${product.items[0].size}"
+    data-product-price="${price}">
         <div class="row align-center">
-            <p>${product.description} - ${product.items[0].price.regular}</p>
+            <p>${product.description} - ${price}</p>
             <img class="ml-auto" src=${thumbnailUrl}/>
         </div>
     </div>`);
 }
 
-window.onload = () => {
+window.onload = async () => {
     const saveButton = document.getElementById('save-list-button');
 
     const groceryList = new GroceryList(document.querySelector('#item-container > .list-container'));
+    await groceryList.initialize();
 
     const productClickHandler = (event) => {
         const origin = event.target;
@@ -90,7 +129,6 @@ window.onload = () => {
         const items = groceryList.getList();
         const location = window.localStorage.getItem('kroger_location_id');
         const accessToken = window.localStorage.getItem('kroger_access_token');
-        console.log(accessToken);
 
         const list = {location, items};
         
