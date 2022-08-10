@@ -1,21 +1,20 @@
-.location-container {
+#location-container {
     padding-left: 30px;
     padding-right: 30px;
-    max-width: 350px;
 }
 
-.item-container {
+#item-container {
     padding-left: 30px;
     padding-right: 30px;
     max-width: 600px;
 }
 
-.item-container > .list-container {
-    height: 400px;
+#item-container > .list-container {
+    height: 40vh;
     overflow-y: auto;
 }
 
-.add-container {
+#add-container {
     padding-left: 30px;
     padding-right: 30px;
     max-width: 350px;
@@ -26,3 +25,13 @@
     display: inline-block;
     width: 250px;
 }
+
+#clear-list-button {
+    width: 175px;
+    margin-left: 15px;
+}
+
+.absolute-wrapper {
+    position: relative;
+    width: 100%;
+} 

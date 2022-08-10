@@ -17,34 +17,53 @@
     <script src="../js/list.js"></script>
 </head>
     <body>
-        <div class="main-container full-height align-center justify-center">
-            <div class="row">
-                <div class="location-container col" id="location-container">
-                    <h2 class="location-title">Find your location</h2>
-                    <div class="custom-input">
-                        <input placeholder="Zip code" maxlength="5" class="custom-input-left search-dropdown-input"/>
-                        <div class="justify-center align-center custom-input-right"><div class="chevron-right"></div></div>
+        <div class="main-container">
+            <div class="col full-height">
+                <div class="row justify-center align-center" id="location-selector">
+                    <div class="col">
+                        <h2 class="location-title">Find your location</h2>
                     </div>
-                    <div class="search-dropdown-container">
+                    <div class="col">
+                        <div class="custom-input">
+                            <input placeholder="Zip code" maxlength="5" class="custom-input-left search-dropdown-input"/>
+                            <div class="justify-center align-center custom-input-right"><div class="chevron-right"></div></div>
+                        </div>
+                        <div class="absolute-wrapper">
+                            <div class="search-dropdown-container">
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="item-container col" id="item-container">
-                    <h2>Your grocery list</h2>
-                    <ul class="list-container">
-
-                    </ul>
-                    <h5>Total: <span id="total-price"></span></h5>
-                    <button class="btn save-btn" id="save-list-button">Save</button>
-                </div>
-
-                <div class="add-container col" id="add-container">
-                    <h2>Add items</h2>
-                    <div class="custom-input">
-                        <input placeholder="Product name..." class="custom-input-left search-dropdown-input"/>
-                        <div class="justify-center align-center custom-input-right"><div class="chevron-right"></div></div>
+                <!-- <div class="row" id="location-button">      
+                    <div class="row" id="location-button">
+                        <h3>Your current location: <span></span></h3>
+                        <button class="btn btn-save">Change</button>
                     </div>
-                    <div class="search-dropdown-container">
+                </div> -->
+                <div class="row justify-center">
+                    <div class="col" id="item-container">
+                        <h2>Your grocery list</h2>
+                        <ul class="list-container">
+    
+                        </ul>
+                        <h5>Total: <span id="total-price"></span></h5>
+                        <div class="row">
+                            <button class="btn save-btn" id="save-list-button">Save</button>
+                            <button class="btn btn-delete" id="clear-list-button">Clear</button>
+                        </div>
+                    </div>
+    
+                    <div class="col" id="add-container">
+                        <h2>Add items</h2>
+                        <div class="custom-input">
+                            <input placeholder="Product name..." class="custom-input-left search-dropdown-input"/>
+                            <div class="justify-center align-center custom-input-right"><div class="chevron-right"></div></div>
+                        </div>
+                        <div class="absolute-wrapper">
+                            <div class="search-dropdown-container">
+                            </div>
+                        </div>
+                        <h1>TEST</h1>
                     </div>
                 </div>
             </div>

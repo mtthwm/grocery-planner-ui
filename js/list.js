@@ -53,6 +53,11 @@ const GroceryList = function (container, initialList=[]) {
         this._removeIndex(index);
     };
 
+    this.clear = () => {
+        this._list = [];
+        this.render();
+    };
+
     this.render = () => {
         const content = this._list.map((item, index) => {
             return this._renderProduct(item, index)
@@ -86,6 +91,32 @@ const GroceryList = function (container, initialList=[]) {
     };
 };
 
+const VisibilityController = function (elements) {
+    this._elements = elements;
+    this._currentIndex = 0;
+
+    this._updateVisibility = () => {
+        this._elements.forEach((element, index) => {
+            if (index === this._currentIndex) {
+                element.style.display = '';
+            } else {
+                element.style.display = 'none';
+            }
+        });
+    }
+
+    this.select = (index) => {
+        this._currentIndex = index;
+        this._updateVisibility();
+    };
+
+    this.cycle = (places=1) => {
+        this._currentIndex = (this._currentIndex + places) % this._elements.length;
+        this._updateVisibility();
+    };
+
+    this._updateVisibility();
+}
 
 // Render functions
 const renderLocation = (location) => {
@@ -97,7 +128,8 @@ const renderProducts = (product) => {
     const thumbnailUrl = product.images[0].sizes.find(image => image.size === 'thumbnail').url;
     const onPromo = item.price.promo > 0;
     const promoPrice = item.price.promo;
-    const price = onPromo ? promoPrice : item.price.regular; 
+    const regularPrice = item.price.regular;
+    const price = onPromo ? promoPrice : regularPrice; 
     return (`
     <div class="search-dropdown-item" 
     data-product-description="${product.description}" 
@@ -106,14 +138,17 @@ const renderProducts = (product) => {
     data-product-size="${product.items[0].size}"
     data-product-price="${price}">
         <div class="row align-center">
-            <p>${product.description} - ${price}</p>
-            <img class="ml-auto" src=${thumbnailUrl}/>
+            <p>${product.description}</p>
+            <p class="ml-auto">${onPromo ? `<del>${regularPrice}</del> <mark>${price}</mark>` : `${price}`}</p>
+            <img src=${thumbnailUrl}/>
         </div>
     </div>`);
 }
 
+// Main function
 window.onload = async () => {
     const saveButton = document.getElementById('save-list-button');
+    const clearButton = document.getElementById('clear-list-button');
 
     const groceryList = new GroceryList(document.querySelector('#item-container > .list-container'));
     await groceryList.initialize();
@@ -151,11 +186,18 @@ window.onload = async () => {
             alert('There was an error with your list');
         }
     }
+
+    const clearList = () => {
+        groceryList.clear();
+    };
     
     saveButton.addEventListener('click', saveList);
+    clearButton.addEventListener('click', clearList)
 
-    setUpSearchDropdown(document.getElementById('location-container'), lookupLocations, renderLocation, locationClickHandler);
+    setUpSearchDropdown(document.getElementById('location-selector'), lookupLocations, renderLocation, locationClickHandler);
     setUpSearchDropdown(document.getElementById('add-container'), lookupProducts, renderProducts, productClickHandler);
+
+    // const locationSelection = new VisibilityController([document.getElementById('location-selector'), document.getElementById('location-button')]);
 }
 
 const setUpSearchDropdown = async (container, obtainListCallback, renderCallback, clickCallback) => {
