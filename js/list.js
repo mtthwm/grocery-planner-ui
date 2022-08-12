@@ -88,18 +88,22 @@ const GroceryList = function (container, initialList=[]) {
                 accessToken: accessToken,
             })
         });
-        if (response.status == 404)
+        if (response && response.status === 200) {
+            const responseJson = await response.json();
+            const list = responseJson.list;
+    
+            this._list = list.items;
+            window.localStorage.setItem('kroger_location_id', list.location);
+    
+            this.render();
+        } else if (response && response.status == 404)
         {
             this.render();
             return;
+        } else if (response && response.status == 401)
+        {
+            redirectToSignIn();
         }
-        const responseJson = await response.json();
-        const list = responseJson.list;
-
-        this._list = list.items;
-        window.localStorage.setItem('kroger_location_id', list.location);
-
-        this.render();
     };
 };
 
@@ -220,12 +224,16 @@ window.onload = async () => {
             })
         });
 
-        if (response && response.status == 200) {
+        console.log(response);
+
+        if (response && response.status === 200) {
             const responseJson = await response.json();
             
             if (responseJson && responseJson.list) {
                 alert('Your list was saved successfully!')
             }
+        } else if (response && response.status === 401) {
+            redirectToSignIn();
         } else {
             alert('There was an error with your list');
         }
@@ -310,9 +318,14 @@ const lookupLocations = async (zipCode) => {
             'accessToken': accessToken,
         })
     });
-    const responseJson = await response.json();
 
-    return responseJson;
+    if (response && response.status === 200) {
+        const responseJson = await response.json();
+        return responseJson;
+    } if (response && response.status === 401)
+    {
+        redirectToSignIn();
+    }
 }
 
 const lookupProducts = async (term) => {
@@ -324,8 +337,13 @@ const lookupProducts = async (term) => {
             'accessToken': accessToken,
         })
     });
-    const responseJson = await response.json();
-    return responseJson;
+
+    if (response && response.status == 200) {
+        const responseJson = await response.json();
+        return responseJson;
+    } else if (response && response.status === 401) {
+        redirectToSignIn();
+    }
 }
 
 /*
@@ -365,4 +383,8 @@ const elementToDataObject = (element) => {
     }
 
     return result;
+};
+
+const redirectToSignIn = () => {
+    window.location.replace('/html/index.html');
 };
