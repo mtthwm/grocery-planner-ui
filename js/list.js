@@ -16,7 +16,7 @@ const GroceryList = function (container, initialList=[]) {
                         </div>
                     </div>
                     <div class="col justify-center align-center ml-auto">
-                        <b>${product.price}</b>
+                        <b>$${Number(product.price).toFixed(2)}</b>
                     </div>
                     <div class="col justify-center align-center">
                         <img src=${product.thumbnail}/>
@@ -164,11 +164,11 @@ const renderProducts = (product) => {
             </div>
         </div>
         <div class="col justify-center align-center ml-auto">
-            <b class="ml-auto m-0">${onPromo ? `<del>${regularPrice}</del> <mark>${price}</mark>` : `${price}`}</b>
+            <b class="ml-auto m-0">${onPromo ? `<del>$${regularPrice.toFixed(2)}</del> <mark>$${price.toFixed(2)}</mark>` : `$${price.toFixed(2)}`}</b>
         </div>
         <div class="col">
             <img src=${thumbnailUrl}/>
-        </div
+        </div>
     </div>`);
 }
 
