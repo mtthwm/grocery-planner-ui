@@ -16,7 +16,7 @@ const GroceryList = function (container, initialList=[]) {
                         </div>
                     </div>
                     <div class="col justify-center align-center ml-auto">
-                        <b>$${Number(product.price).toFixed(2)}</b>
+                        <b>${product.price > 0 ? `$${Number(product.price).toFixed(2)}` : 'Price Unavailable'}</b>
                     </div>
                     <div class="col justify-center align-center">
                         <img src=${product.thumbnail}/>
@@ -142,11 +142,15 @@ const renderLocation = (location) => {
 
 const renderProducts = (product) => {
     const item = product.items[0];
+    console.log(product);
     const thumbnailUrl = product.images[0].sizes.find(image => image.size === 'thumbnail').url;
-    const onPromo = item.price.promo > 0;
-    const promoPrice = item.price.promo;
-    const regularPrice = item.price.regular;
-    const price = onPromo ? promoPrice : regularPrice; 
+    
+    let price = item.price;
+    let priceData = 0;
+    if (price) {
+        priceData = price.promo > 0 ? price.promo : price.regular;
+    }
+
     const size = item.size;
     return (`
     <div class="search-dropdown-item row" 
@@ -154,7 +158,7 @@ const renderProducts = (product) => {
     data-product-thumbnail="${thumbnailUrl}"
     data-product-id="${product.productId}"
     data-product-size="${product.items[0].size}"
-    data-product-price="${price}">
+    data-product-price="${priceData}">
         <div class="col">
             <div class="row align-center">
                 <p class="m-0">${product.description}</p>
@@ -164,7 +168,12 @@ const renderProducts = (product) => {
             </div>
         </div>
         <div class="col justify-center align-center ml-auto">
-            <b class="ml-auto m-0">${onPromo ? `<del>$${regularPrice.toFixed(2)}</del> <mark>$${price.toFixed(2)}</mark>` : `$${price.toFixed(2)}`}</b>
+            ${price ? 
+                `<b class="ml-auto m-0">${price.promo > 0 ? `<del>$${price.regular.toFixed(2)}</del> <mark>$${price.promo.toFixed(2)}</mark>` : `$${price.regular.toFixed(2)}`}</b>`
+            : 
+                `<b>Price Unavailable</b>`
+            }
+            
         </div>
         <div class="col">
             <img src=${thumbnailUrl}/>
