@@ -12,12 +12,13 @@
 #item-container > .list-container {
     height: 40vh;
     overflow-y: auto;
+    background-color: white;
 }
 
 #add-container {
     padding-left: 30px;
     padding-right: 30px;
-    max-width: 350px;
+    max-width: 375px;
 }
 
 .save-btn {
@@ -34,4 +35,25 @@
 .absolute-wrapper {
     position: relative;
     width: 100%;
-} 
+}
+
+.location-navbar {
+    height: 75px;
+}
+
+.grocery-list {
+    display: inline-block;
+    border-bottom: 0.25px solid #6C584C;
+    width: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.grocery-item:hover {
+    background-color: initial;
+    cursor: initial;
+}
+
+.grocery-item > * {
+    pointer-events: initial;
+}

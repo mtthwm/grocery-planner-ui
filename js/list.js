@@ -5,15 +5,27 @@ const GroceryList = function (container, initialList=[]) {
 
     this._renderProduct = (product, index) => {
         return(`
-            <li class="list-li">
+            <div class="search-dropdown-item grocery-item">
                 <div class="row">
-                    <p>${product.description}</p>
-                    <div class="ml-auto row align-center">
-                        <div class="thumbnail-container"><img class="thumbnail" src="${product.thumbnail}"/></div>
+                    <div class="col">
+                        <div class="row align-center">
+                            <p class="m-0">${product.description}</p>
+                        </div>
+                        <div class="row align-center">
+                            <b class="m-0">${product.size}</b>
+                        </div>
+                    </div>
+                    <div class="col justify-center align-center ml-auto">
+                        <b>${product.price}</b>
+                    </div>
+                    <div class="col justify-center align-center">
+                        <img src=${product.thumbnail}/>
+                    </div>
+                    <div class="col justify-center align-center">
                         <button class="list-remove btn btn-close" data-index="${index}">&#10006;</button>
                     </div>
                 </div>
-            </li>
+            </div>
         `)
     };
 
@@ -98,9 +110,9 @@ const VisibilityController = function (elements) {
     this._updateVisibility = () => {
         this._elements.forEach((element, index) => {
             if (index === this._currentIndex) {
-                element.style.display = '';
+                element.classList.remove('hidden');
             } else {
-                element.style.display = 'none';
+                element.classList.add('hidden');
             }
         });
     }
@@ -120,7 +132,12 @@ const VisibilityController = function (elements) {
 
 // Render functions
 const renderLocation = (location) => {
-    return (`<div class="search-dropdown-item" data-location-id="${location.locationId}"><p>${location.name}</p></div>`);
+    return (`
+    <div class="search-dropdown-item" 
+    data-location-name="${location.name}"
+    data-location-id="${location.locationId}">
+        <p>${location.name}</p>
+    </div>`);
 };
 
 const renderProducts = (product) => {
@@ -130,25 +147,44 @@ const renderProducts = (product) => {
     const promoPrice = item.price.promo;
     const regularPrice = item.price.regular;
     const price = onPromo ? promoPrice : regularPrice; 
+    const size = item.size;
     return (`
-    <div class="search-dropdown-item" 
+    <div class="search-dropdown-item row" 
     data-product-description="${product.description}" 
     data-product-thumbnail="${thumbnailUrl}"
     data-product-id="${product.productId}"
     data-product-size="${product.items[0].size}"
     data-product-price="${price}">
-        <div class="row align-center">
-            <p>${product.description}</p>
-            <p class="ml-auto">${onPromo ? `<del>${regularPrice}</del> <mark>${price}</mark>` : `${price}`}</p>
-            <img src=${thumbnailUrl}/>
+        <div class="col">
+            <div class="row align-center">
+                <p class="m-0">${product.description}</p>
+            </div>
+            <div class="row align-center">
+                <b class="m-0">${size}</b>
+            </div>
         </div>
+        <div class="col justify-center align-center ml-auto">
+            <b class="ml-auto m-0">${onPromo ? `<del>${regularPrice}</del> <mark>${price}</mark>` : `${price}`}</b>
+        </div>
+        <div class="col">
+            <img src=${thumbnailUrl}/>
+        </div
     </div>`);
 }
 
 // Main function
 window.onload = async () => {
+    const changeLocationButton = document.getElementById('location-change-button');
     const saveButton = document.getElementById('save-list-button');
     const clearButton = document.getElementById('clear-list-button');
+    const locationSelection = new VisibilityController([document.getElementById('location-selector'), document.getElementById('location-button')]);
+
+    if (window.localStorage.getItem('kroger_location_id'))
+    {
+        updateLocationNameDisplay();
+        locationSelection.cycle();
+
+    }
 
     const groceryList = new GroceryList(document.querySelector('#item-container > .list-container'));
     await groceryList.initialize();
@@ -178,8 +214,7 @@ window.onload = async () => {
         if (response && response.status == 200) {
             const responseJson = await response.json();
             
-            if (responseJson && responseJson.list)
-            {
+            if (responseJson && responseJson.list) {
                 alert('Your list was saved successfully!')
             }
         } else {
@@ -192,12 +227,17 @@ window.onload = async () => {
     };
     
     saveButton.addEventListener('click', saveList);
-    clearButton.addEventListener('click', clearList)
+    clearButton.addEventListener('click', clearList);
+    changeLocationButton.addEventListener('click', (event) => {
+        groceryList.clear();
+        locationSelection.cycle();
+    });
 
-    setUpSearchDropdown(document.getElementById('location-selector'), lookupLocations, renderLocation, locationClickHandler);
+    setUpSearchDropdown(document.getElementById('location-selector'), lookupLocations, renderLocation, event => {
+        locationSelection.cycle();
+        locationClickHandler(event);
+    });
     setUpSearchDropdown(document.getElementById('add-container'), lookupProducts, renderProducts, productClickHandler);
-
-    // const locationSelection = new VisibilityController([document.getElementById('location-selector'), document.getElementById('location-button')]);
 }
 
 const setUpSearchDropdown = async (container, obtainListCallback, renderCallback, clickCallback) => {
@@ -240,8 +280,17 @@ const setupDelayedChangeInput = (inputElement, callback) => {
 const locationClickHandler = (event) => {
     const origin = event.target;
     const locationId = origin.getAttribute('data-location-id');
+    const locationName = origin.getAttribute('data-location-name');
     window.localStorage.setItem('kroger_location_id', locationId);
+    window.localStorage.setItem('kroger_location_name', locationName);
+    updateLocationNameDisplay();
 };
+
+const updateLocationNameDisplay = () => { 
+    Array.from(document.getElementsByClassName('location-name-container')).forEach(element => {
+        element.innerHTML = window.localStorage.getItem('kroger_location_name');
+    });
+}
 
 const lookupLocations = async (zipCode) => {
     const accessToken = window.localStorage.getItem('kroger_access_token');

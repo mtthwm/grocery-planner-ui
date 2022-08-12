@@ -19,33 +19,37 @@
     <body>
         <div class="main-container">
             <div class="col full-height">
-                <div class="row justify-center align-center" id="location-selector">
-                    <div class="col">
-                        <h2 class="location-title">Find your location</h2>
-                    </div>
-                    <div class="col">
-                        <div class="custom-input">
-                            <input placeholder="Zip code" maxlength="5" class="custom-input-left search-dropdown-input"/>
-                            <div class="justify-center align-center custom-input-right"><div class="chevron-right"></div></div>
+                <div class="navbar location-navbar">
+                    <div class="row align-center justify-center px" id="location-selector">
+                        <div class="col pad-x">
+                            <h5 class="location-title light">Find your location</h5>
                         </div>
-                        <div class="absolute-wrapper">
-                            <div class="search-dropdown-container">
+                        <div class="col pad-x">
+                            <div class="custom-input">
+                                <input placeholder="Zip code" maxlength="5" class="custom-input-left search-dropdown-input"/>
+                                <div class="justify-center align-center custom-input-right"><div class="chevron-right"></div></div>
+                            </div>
+                            <div class="absolute-wrapper">
+                                <div class="search-dropdown-container">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden" id="location-button">      
+                        <div class="row" id="location-button">
+                            <div class="col pad-x justify-center">
+                                <h5 class="light">Your current location: <span class="location-name-container"></span></h5>
+                            </div>
+                            <div class="col pad-x justify-center">
+                                <button class="btn btn-sm btn-save" id="location-change-button">Change</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- <div class="row" id="location-button">      
-                    <div class="row" id="location-button">
-                        <h3>Your current location: <span></span></h3>
-                        <button class="btn btn-save">Change</button>
-                    </div>
-                </div> -->
                 <div class="row justify-center">
                     <div class="col" id="item-container">
                         <h2>Your grocery list</h2>
-                        <ul class="list-container">
-    
-                        </ul>
+                        <div class="list-container m-0"></div>
                         <h5>Total: <span id="total-price"></span></h5>
                         <div class="row">
                             <button class="btn save-btn" id="save-list-button">Save</button>
@@ -63,7 +67,6 @@
                             <div class="search-dropdown-container">
                             </div>
                         </div>
-                        <h1>TEST</h1>
                     </div>
                 </div>
             </div>
